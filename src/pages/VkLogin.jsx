@@ -1,17 +1,20 @@
 import * as VKID from '@vkid/sdk';
 
 function VkLogin() {
-  const VkInit = async () => {
-    const responsePkce = await fetch('http://localhost:8000/pkce');
+    const VkInit = async () => {
+    const baseUrl = 'https://xlsift-85-192-48-219.ru.tuna.am'
+    // const responsePkce = await fetch('/back/pkce');
+    const responsePkce = await fetch(baseUrl+'/pkce');
     const dataPkce = await responsePkce.json();
     const {verifier, challenge, state, app, scope} = dataPkce;
     VKID.Config.init({
       app: app,
       codeChallenge: challenge,
-      redirectUrl: 'https://hwmt7z-85-192-48-219.ru.tuna.am/webhook/vk/callback',
+      redirectUrl: baseUrl+'/webhook/vk/callback',
       state: state,
       scope: scope,
-      responseMode: VKID.ConfigResponseMode.Redirect,
+      mode: VKID.ConfigAuthMode.Redirect,
+      responseMode: VKID.ConfigResponseMode.Callback,
     });
 
     const oneTap = new VKID.OneTap();
@@ -19,7 +22,6 @@ function VkLogin() {
     oneTap.render({
       container: document.getElementById('VkIdSdkOneTap'),
       showAlternativeLogin: true,
-      display: "popup"
     })
         .on(VKID.WidgetEvents.ERROR, vkidOnError)
         .on(VKID.OneTapInternalEvents.LOGIN_SUCCESS, function (payload) {
@@ -30,13 +32,14 @@ function VkLogin() {
           .then(vkidOnSuccess)
           .catch(vkidOnError);
       });
+    console.log("VKID OneTap initialized");
 
       function vkidOnSuccess(data) {
         // Обработка полученного результата
       }
 
       function vkidOnError(error) {
-        // Обработка ошибки
+        console.error("VKID Widget Error:", error);
       }
     }
     window.onload = async () => {
@@ -51,7 +54,7 @@ function VkLogin() {
           </div>
         </div>
     )
-  }
+    }
 
 
 export default VkLogin

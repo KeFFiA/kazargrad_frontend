@@ -2,17 +2,18 @@ import { Result } from "antd";
 import { useEffect, useState } from "react";
 
 function CheckState() {
+    let WebApp = window.Telegram.WebApp
     const [status, setStatus] = useState("loading");
     const [message, setMessage] = useState("");
     function closeTelegramAppWithDelay(delay = 100) {
         setTimeout(() => {
-            window.Telegram.WebApp.close();
+            WebApp.close();
         }, delay);
     }
 
     useEffect(() => {
-        if (status === "success" || status === "error") {
-            closeTelegramAppWithDelay(1000);
+        if (status === "True" || status === "error") {
+            closeTelegramAppWithDelay(2000);
         }
     }, [status]);
 
@@ -31,21 +32,25 @@ function CheckState() {
 
     if (status === "True") {
         return (
-            <Result
-                status="success"
-                title="Успех!"
-                subTitle="Теперь вы можете сворачивать это окно и продолжать работу"
-            />
+            <div className="flex justify-center items-center h-screen bg-gray-100">
+                <Result
+                    status="success"
+                    title="Успех!"
+                    subTitle="Теперь вы можете сворачивать это окно и продолжать работу"
+                />
+            </div>
         );
     }
 
     if (status === "error") {
         return (
-            <Result
-                status="error"
-                title="Произошла ошибка"
-                subTitle={message}
-            />
+            <div className="flex justify-center items-center h-screen bg-gray-100">
+                <Result
+                    status="error"
+                    title="Произошла ошибка"
+                    subTitle={message}
+                />
+            </div>
         );
     }
 }

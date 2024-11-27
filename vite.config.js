@@ -10,4 +10,13 @@ export default defineConfig({
       plugins: [tailwindcss()],
     },
   },
-})
+  // server: {
+  //   proxy: {
+  //     '/back': {
+  //       target: 'https://xlsift-85-192-48-219.ru.tuna.am',
+  //       changeOrigin: true,
+  //       rewrite: (path) => path.replace(/^\/back/, ''),
+  //     },
+  //   },
+  // },
+});
